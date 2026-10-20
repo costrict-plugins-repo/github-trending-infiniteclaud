@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfiniteClaud — Design System Hybrid Preview</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== DESIGN SYSTEM HYBRID ===== */
+
+        :root {
+            /* Paleta Híbrida */
+            --gold: #D4A843;
+            --gold-light: #F2D275;
+            --gold-dark: #A07C2A;
+            --bg-primary: #0F0F0F;
+            --bg-secondary: #1A1A1A;
+            --bg-tertiary: #2A2A2A;
+            --cyan: #06B6D4;
+            --purple: #A855F7;
+            --pink: #EC4899;
+            --text-primary: #F5F0E8;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #6B6B6B;
+            --border-light: rgba(255,255,255, 0.1);
+            --border-medium: rgba(255,255,255, 0.15);
+
+            /* Spacing */
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 24px;
+            --space-6: 32px;
+            --space-7: 48px;
+            --space-8: 64px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "DM Sans", Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background animated gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+
+        /* ===== TIPOGRAFIA ===== */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: 4.5rem; line-height: 1.1; }
+        h2 { font-size: 3.2rem; line-height: 1.15; }
+        h3 { font-size: 2.2rem; line-height: 1.2; }
+
+        code, pre, .mono {
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            color: var(--cyan);
+            font-size: 0.9rem;
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 67, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(212, 168, 67, 0.8); }
+        }
+
+        @keyframes orbitSlow {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .reveal { opacity: 0; animation: slideInUp 0.8s ease-out forwards; }
+        .reveal:nth-child(1) { animation-delay: 0s; }
+        .reveal:nth-child(2) { animation-delay: 0.15s; }
+        .reveal:nth-child(3) { animation-delay: 0.3s; }
+        .reveal:nth-child(4) { animation-delay: 0.45s; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(15, 15, 15, 0.95), rgba(15, 15, 15, 0.85));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-4) 0;
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(212, 168, 67, 0.4));
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: var(--space-7);
+        }
+
+        .navbar-links a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: var(--gold);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+            padding-bottom: var(--space-8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            border: 2px solid rgba(212, 168, 67, 0.1);
+            border-radius: 50%;
+            animation: orbitSlow 20s linear infinite;
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            border: 1px solid rgba(168, 85, 247, 0.05);
+            border-radius: 50%;
+            animation: orbitSlow 30s linear infinite reverse;
+            z-index: 0;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin-bottom: var(--space-5);
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--gold-light), var(--cyan), var(--pink));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(212, 168, 67, 0.4));
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin-bottom: var(--space-5);
+            font-weight: 500;
+            animation: slideInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto var(--space-7);
+            animation: slideInUp 0.8s ease-out 0.3s backwards;
+        }
+
+        /* ===== FEATURE WIDGETS ===== */
+        .widgets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-5);
+            max-width: 1000px;
+            margin: 0 auto var(--space-8);
+        }
+
+        .widget {
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(6, 182, 212, 0.05));
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: var(--space-6);
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out backwards;
+        }
+
+        .widget:nth-child(1) { animation-delay: 0.4s; }
+        .widget:nth-child(2) { animation-delay: 0.5s; }
+        .widget:nth-child(3) { animation-delay: 0.6s; }
+        .widget:nth-child(4) { animation-delay: 0.7s; }
+
+        .widget:hover {
+            border-color: var(--gold);
+            transform: translateY(-12px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        .widget-icon {
+            font-size: 2.4rem;
+            margin-bottom: var(--space-4);
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .widget-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: var(--space-2);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .widget-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-3);
+        }
+
+        .widget-stat {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--cyan);
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: var(--space-3) var(--space-5);
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--bg-primary);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 24px rgba(212, 168, 67, 0.3);
+            animation: slideInUp 0.8s ease-out 0.5s backwards;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(212, 168, 67, 0.5);
+        }
+
+        /* ===== METRICS ===== */
+        section {
+            padding: var(--space-8) 0;
+        }
+
+        .section-title {
+            font-size: 3.2rem;
+            text-align: center;
+            margin-bottom: var(--space-8);
+            background: linear-gradient(135deg, var(--gold-light), var(--cyan), var(--pink));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--space-5);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.1), rgba(6, 182, 212, 0.05));
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: var(--space-6);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .metric-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-8px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        .metric-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold-light), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: var(--space-2);
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border-light);
+            padding: var(--space-8) 0;
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: var(--space-4);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .navbar-links { display: none; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .widgets { grid-template-columns: 1fr; }
+            .hero { padding-top: 80px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .hero h1 { font-size: 2rem; }
+            .section-title { font-size: 1.8rem; }
+            .widgets { gap: var(--space-3); }
+            .metric-card { padding: var(--space-4); }
+            .metric-value { font-size: 1.8rem; }
+        }
+
+        /* ===== DEVICE SELECTOR ===== */
+        .device-selector {
+            position: fixed;
+            top: var(--space-4);
+            right: var(--space-4);
+            z-index: 2000;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            padding: var(--space-2);
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .device-btn {
+            padding: var(--space-2) var(--space-4);
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .device-btn.active {
+            background: var(--gold);
+            color: var(--bg-primary);
+            border-color: var(--gold);
+        }
+
+        .device-btn:hover:not(.active) {
+            color: var(--gold);
+        }
+
+        /* Device-specific viewport */
+        .viewport {
+            margin: 0 auto;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-medium);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .viewport.desktop {
+            width: 100%;
+            max-width: 1440px;
+        }
+
+        .viewport.tablet {
+            width: 100%;
+            max-width: 768px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .viewport.mobile {
+            width: 100%;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            aspect-ratio: 9 / 16;
+            overflow-y: auto;
+        }
+
+        /* Device frame */
+        .device-frame {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+        }
+
+        /* ===== ONBOARDING MODAL ===== */
+        .onboarding-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .onboarding-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInModal {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .onboarding-modal {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(42, 42, 42, 0.95));
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: var(--space-8);
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .onboarding-step {
+            display: none;
+            animation: slideInModal 0.4s ease-out;
+        }
+
+        .onboarding-step.active {
+            display: block;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+            padding-bottom: var(--space-4);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .step-counter {
+            font-size: 0.85rem;
+            color: var(--cyan);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--gold);
+        }
+
+        .step-content {
+            margin-bottom: var(--space-6);
+        }
+
+        .step-icon {
+            font-size: 3.2rem;
+            margin-bottom: var(--space-4);
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .step-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: var(--space-4);
+            color: var(--gold);
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: var(--space-4);
+        }
+
+        /* Features List */
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .feature-item {
+            display: flex;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            background: rgba(212, 168, 67, 0.05);
+            border-left: 3px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            background: rgba(212, 168, 67, 0.1);
+            transform: translateX(4px);
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .feature-item strong {
+            color: var(--gold);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .feature-item p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Form */
+        .onboarding-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: var(--space-3) var(--space-4);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--cyan);
+            background: rgba(6, 182, 212, 0.05);
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Tour Highlights */
+        .tour-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .tour-item {
+            display: flex;
+            gap: var(--space-3);
+            align-items: center;
+            padding: var(--space-3);
+            background: rgba(6, 182, 212, 0.05);
+            border-radius: 8px;
+        }
+
+        .tour-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--cyan);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        /* Links Grid */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-4);
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-4);
+            background: rgba(212, 168, 67, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .link-card:hover {
+            background: rgba(212, 168, 67, 0.1);
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        .link-icon {
+            font-size: 2rem;
+        }
+
+        .link-card strong {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .link-card p {
+            font-size: 0.8rem;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Success Animation */
+        .success-animation {
+            display: flex;
+            justify-content: center;
+            margin: var(--space-6) 0;
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--cyan), var(--pink));
+            border-radius: 50%;
+            font-size: 3rem;
+            color: var(--bg-primary);
+            animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Buttons */
+        .step-actions {
+            display: flex;
+            gap: var(--space-3);
+            justify-content: space-between;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: var(--space-3) var(--space-4);
+            background: rgba(212, 168, 67, 0.1);
+            border: 1px solid var(--border-light);
+            color: var(--gold);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 168, 67, 0.2);
+            border-color: var(--gold);
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: var(--space-3) var(--space-4);
+            background: linear-gradient(135deg, var(--cyan), var(--pink));
+            border: none;
+            color: var(--bg-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-mini {
+            padding: 6px 12px;
+            background: var(--cyan);
+            border: none;
+            color: var(--bg-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .btn-mini:hover {
+            transform: scale(1.05);
+        }
+
+        /* Tour Overlay */
+        .tour-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2500;
+            pointer-events: none;
+        }
+
+        .tour-overlay.hidden {
+            display: none;
+        }
+
+        .tour-spotlight {
+            position: absolute;
+            border: 3px solid var(--cyan);
+            border-radius: 12px;
+            box-shadow: 0 0 0 9999px rgba(15, 15, 15, 0.7);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tour-tooltip {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(42, 42, 42, 0.95));
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: var(--space-5);
+            max-width: 300px;
+            backdrop-filter: blur(20px);
+            pointer-events: auto;
+            animation: slideInModal 0.3s ease-out;
+        }
+
+        #tour-text {
+            display: block;
+            color: var(--text-primary);
+            margin-bottom: var(--space-3);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .onboarding-modal {
+                padding: var(--space-5);
+                max-width: 100%;
+            }
+
+            .step-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-actions {
+                flex-direction: column;
+            }
+
+            .btn-secondary,
+            .btn-primary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Device Selector -->
+<div class="device-selector">
+    <button class="device-btn active" onclick="setDevice('desktop')">💻 Desktop</button>
+    <button class="device-btn" onclick="setDevice('tablet')">📱 Tablet</button>
+    <button class="device-btn" onclick="setDevice('mobile')">📲 Mobile</button>
+</div>
+
+<!-- Viewport Container -->
+<div id="viewport" class="viewport desktop">
+    <div class="device-frame">
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="container">
+                <span class="navbar-brand">∞ InfiniteClaud</span>
+                <div class="navbar-links">
+                    <a href="#hero">Início</a>
+                    <a href="#metrics">Números</a>
+                    <a href="#features">Recursos</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>
+                        <span>InfiniteClaud</span>
+                    </h1>
+                    <p class="hero-subtitle">Automação infinita. Precisão cirúrgica.</p>
+                    <p class="hero-description">
+                        O agente autônomo que entende a máquina. 50x mais rápido. 90% menos tokens. Oficial do Claude Marketplace.
+                    </p>
+
+                    <!-- Widgets -->
+                    <div class="widgets">
+                        <div class="widget reveal">
+                            <div class="widget-icon">⚡</div>
+                            <div class="widget-title">50x Mais Rápido</div>
+                            <div class="widget-description">DOM direto vs screenshots</div>
+                            <div class="widget-stat">&lt;100ms</div>
+                        </div>
+
+                        <div class="widget reveal">
+                            <div class="widget-icon">🧠</div>
+                            <div class="widget-title">Model Router</div>
+                            <div class="widget-description">Haiku, Sonnet ou Opus</div>
+                            <div class="widget-stat">90%</div>
+                        </div>
+
+                        <div class="widget reveal">
+                            <div class="widget-icon">🔧</div>
+                            <div class="widget-title">20 MCP Tools</div>
+                            <div class="widget-description">Web, FS, Native, System</div>
+                            <div class="widget-stat">Completo</div>
+                        </div>
+
+                        <div class="widget reveal">
+                            <div class="widget-icon">📡</div>
+                            <div class="widget-title">3 Interfaces</div>
+                            <div class="widget-description">CLI, Web, Telegram</div>
+                            <div class="widget-stat">Remoto</div>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="startOnboarding()">Instalar Agora →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- METRICS SECTION -->
+        <section id="metrics">
+            <div class="container">
+                <h2 class="section-title reveal">Números que Impressionam</h2>
+
+                <div class="metrics-grid">
+                    <div class="metric-card reveal">
+                        <div class="metric-value">50x</div>
+                        <div class="metric-label">Mais rápido</div>
+                    </div>
+                    <div class="metric-card reveal">
+                        <div class="metric-value">90%</div>
+                        <div class="metric-label">Menos tokens</div>
+                    </div>
+                    <div class="metric-card reveal">
+                        <div class="metric-value">20</div>
+                        <div class="metric-label">Ferramentas</div>
+                    </div>
+                    <div class="metric-card reveal">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Interfaces</div>
+                    </div>
+                    <div class="metric-card reveal">
+                        <div class="metric-value">&lt;100ms</div>
+                        <div class="metric-label">Por ação</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="container">
+                <div class="footer-brand">InfiniteClaud</div>
+                <p style="margin-bottom: var(--space-4);">
+                    <a href="#" style="color: var(--cyan);">GitHub</a> •
+                    <a href="#" style="color: var(--cyan);">Docs</a> •
+                    <a href="#" style="color: var(--cyan);">Marketplace</a>
+                </p>
+                <p>Criado por Douglas Kazunari • Licença MIT • 2026</p>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div id="onboarding-overlay" class="onboarding-overlay">
+    <div class="onboarding-modal">
+        <!-- Step 1: Bem-vindo -->
+        <div class="onboarding-step active" id="step-1">
+            <div class="step-header">
+                <span class="step-counter">Passo 1 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">🚀</div>
+                <h2>Bem-vindo ao InfiniteClaud</h2>
+                <p>O agente autônomo mais poderoso para Claude Code. Vamos guiá-lo através da configuração em alguns passos simples.</p>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="nextStep()">Começar →</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Entender Features -->
+        <div class="onboarding-step" id="step-2">
+            <div class="step-header">
+                <span class="step-counter">Passo 2 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">⚡</div>
+                <h2>Por que InfiniteClaud?</h2>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <div>
+                            <strong>50x Mais Rápido</strong>
+                            <p>Acesso direto ao DOM vs screenshots</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🧠</span>
+                        <div>
+                            <strong>Model Router</strong>
+                            <p>Economiza 90% de tokens automaticamente</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔧</span>
+                        <div>
+                            <strong>20 Ferramentas MCP</strong>
+                            <p>Web, Filesystem, Native, System</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Configuração -->
+        <div class="onboarding-step" id="step-3">
+            <div class="step-header">
+                <span class="step-counter">Passo 3 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">⚙️</div>
+                <h2>Configuração Inicial</h2>
+                <form class="onboarding-form" id="config-form">
+                    <div class="form-group">
+                        <label for="name">Nome do Projeto</label>
+                        <input type="text" id="name" placeholder="Ex: Meu Bot Automático" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Modelo Padrão</label>
+                        <select id="model">
+                            <option value="haiku">Haiku (Rápido)</option>
+                            <option value="sonnet" selected>Sonnet (Balanceado)</option>
+                            <option value="opus">Opus (Poderoso)</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Tour Interativo -->
+        <div class="onboarding-step" id="step-4">
+            <div class="step-header">
+                <span class="step-counter">Passo 4 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">👁️</div>
+                <h2>Tour pela Interface</h2>
+                <p>Clique em "Iniciar Tour" para destacar os elementos principais da plataforma.</p>
+                <div class="tour-highlights">
+                    <div class="tour-item">
+                        <span class="tour-num">1</span>
+                        <strong>Navbar:</strong> Navegação rápida
+                    </div>
+                    <div class="tour-item">
+                        <span class="tour-num">2</span>
+                        <strong>Hero:</strong> Seção principal com widgets
+                    </div>
+                    <div class="tour-item">
+                        <span class="tour-num">3</span>
+                        <strong>Métricas:</strong> Números que impressionam
+                    </div>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-primary" onclick="startTour()">👁️ Iniciar Tour</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Próximos Passos -->
+        <div class="onboarding-step" id="step-5">
+            <div class="step-header">
+                <span class="step-counter">Passo 5 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">🔗</div>
+                <h2>Próximos Passos</h2>
+                <p>Explore a documentação e comunidade:</p>
+                <div class="links-grid">
+                    <a href="https://github.com/silvakazu-cell/infiniteclaud" target="_blank" class="link-card">
+                        <span class="link-icon">📦</span>
+                        <strong>GitHub</strong>
+                        <p>Código-fonte e issues</p>
+                    </a>
+                    <a href="#" class="link-card">
+                        <span class="link-icon">📚</span>
+                        <strong>Documentação</strong>
+                        <p>Guia completo de uso</p>
+                    </a>
+                    <a href="#" class="link-card">
+                        <span class="link-icon">💬</span>
+                        <strong>Comunidade</strong>
+                        <p>Suporte e discussões</p>
+                    </a>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-secondary" onclick="nextStep()">Próximo →</button>
+            </div>
+        </div>
+
+        <!-- Step 6: Conclusão -->
+        <div class="onboarding-step" id="step-6">
+            <div class="step-header">
+                <span class="step-counter">Passo 6 de 6</span>
+                <button onclick="closeOnboarding()" class="close-btn">✕</button>
+            </div>
+            <div class="step-content">
+                <div class="step-icon">✨</div>
+                <h2>Pronto para começar!</h2>
+                <p id="summary-text">Você configurou tudo corretamente. Agora é hora de explorar o poder do InfiniteClaud.</p>
+                <div class="success-animation">
+                    <div class="checkmark">✓</div>
+                </div>
+            </div>
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="prevStep()">← Voltar</button>
+                <button class="btn-primary" onclick="finishOnboarding()">Finalizar →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tour Highlight Overlay -->
+<div id="tour-overlay" class="tour-overlay hidden">
+    <div class="tour-spotlight"></div>
+    <div class="tour-tooltip">
+        <span id="tour-text"></span>
+        <button onclick="nextTourStep()" class="btn-mini">Próximo →</button>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    let tourActive = false;
+    let tourStep = 0;
+    const totalSteps = 6;
+
+    // Onboarding Control
+    function startOnboarding() {
+        document.getElementById('onboarding-overlay').classList.add('active');
+        currentStep = 1;
+        showStep(1);
+    }
+
+    function closeOnboarding() {
+        document.getElementById('onboarding-overlay').classList.remove('active');
+        if (tourActive) {
+            endTour();
+        }
+    }
+
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.onboarding-step').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show current step
+        document.getElementById(`step-${step}`).classList.add('active');
+
+        // Update buttons state
+        const prevBtn = document.querySelector('.step-actions button:nth-child(1)');
+        const nextBtn = document.querySelector('.step-actions button:nth-child(2)');
+
+        if (prevBtn && step === 1) prevBtn.style.display = 'none';
+    }
+
+    function finishOnboarding() {
+        const name = document.getElementById('name').value || 'Usuário';
+        const email = document.getElementById('email').value || 'seu@email.com';
+        const model = document.getElementById('model').value || 'sonnet';
+
+        // Show summary
+        document.getElementById('summary-text').innerHTML =
+            `<strong>${name}</strong>, você configurou o InfiniteClaud com sucesso!<br><br>` +
+            `Email: ${email}<br>` +
+            `Modelo: ${model.charAt(0).toUpperCase() + model.slice(1)}<br><br>` +
+            `Agora acesse a documentação para começar a automatizar!`;
+
+        // Save to localStorage
+        localStorage.setItem('infiniteclaud-config', JSON.stringify({
+            name, email, model, date: new Date().toISOString()
+        }));
+
+        // Close after 2 seconds
+        setTimeout(() => {
+            closeOnboarding();
+        }, 2000);
+    }
+
+    // Tour System
+    const tourPoints = [
+        {
+            selector: '.navbar',
+            title: '📍 Navbar',
+            description: 'Navegação principal com links para Início, Números e Recursos'
+        },
+        {
+            selector: '.hero-content',
+            title: '📍 Hero Section',
+            description: 'Apresentação principal com widgets de features animados'
+        },
+        {
+            selector: '.widgets',
+            title: '📍 Feature Widgets',
+            description: '4 cards animados mostrando os principais benefícios do InfiniteClaud'
+        },
+        {
+            selector: '#metrics',
+            title: '📍 Seção de Métricas',
+            description: '5 números que demonstram o poder da plataforma'
+        }
+    ];
+
+    function startTour() {
+        tourActive = true;
+        tourStep = 0;
+        document.getElementById('tour-overlay').classList.remove('hidden');
+        showTourStep(0);
+    }
+
+    function showTourStep(index) {
+        if (index >= tourPoints.length) {
+            endTour();
+            nextStep();
+            return;
+        }
+
+        const point = tourPoints[index];
+        const element = document.querySelector(point.selector);
+
+        if (!element) {
+            tourStep++;
+            showTourStep(tourStep);
+            return;
+        }
+
+        const rect = element.getBoundingClientRect();
+        const spotlight = document.querySelector('.tour-spotlight');
+        const tooltip = document.querySelector('.tour-tooltip');
+
+        // Position spotlight
+        spotlight.style.left = (rect.left - 8) + 'px';
+        spotlight.style.top = (rect.top - 8) + 'px';
+        spotlight.style.width = (rect.width + 16) + 'px';
+        spotlight.style.height = (rect.height + 16) + 'px';
+
+        // Position tooltip
+        let tooltipX = rect.left + rect.width / 2 - 150;
+        let tooltipY = rect.bottom + 20;
+
+        if (tooltipY + 150 > window.innerHeight) {
+            tooltipY = rect.top - 160;
+        }
+
+        tooltip.style.left = Math.max(10, Math.min(tooltipX, window.innerWidth - 310)) + 'px';
+        tooltip.style.top = tooltipY + 'px';
+
+        document.getElementById('tour-text').textContent =
+            `${point.title}: ${point.description}`;
+    }
+
+    function nextTourStep() {
+        tourStep++;
+        if (tourStep < tourPoints.length) {
+            showTourStep(tourStep);
+        } else {
+            endTour();
+            nextStep();
+        }
+    }
+
+    function endTour() {
+        tourActive = false;
+        document.getElementById('tour-overlay').classList.add('hidden');
+    }
+
+    // Device Selector
+    function setDevice(device) {
+        const viewport = document.getElementById('viewport');
+        const buttons = document.querySelectorAll('.device-btn');
+
+        // Remove active from all buttons
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // Remove all device classes
+        viewport.classList.remove('desktop', 'tablet', 'mobile');
+
+        // Add selected device class
+        viewport.classList.add(device);
+
+        // Mark button as active
+        event.target.classList.add('active');
+    }
+
+    // Load saved config on page load
+    window.addEventListener('load', () => {
+        const saved = localStorage.getItem('infiniteclaud-config');
+        if (saved) {
+            try {
+                const config = JSON.parse(saved);
+                document.getElementById('name').value = config.name;
+                document.getElementById('email').value = config.email;
+                document.getElementById('model').value = config.model;
+            } catch (e) {
+                console.log('Could not load saved config');
+            }
+        }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (!document.getElementById('onboarding-overlay').classList.contains('active')) return;
+
+        if (e.key === 'Escape') closeOnboarding();
+        if (e.key === 'ArrowRight') nextStep();
+        if (e.key === 'ArrowLeft') prevStep();
+    });
+</script>
+
+</body>
+</html>
